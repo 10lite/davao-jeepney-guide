@@ -22,15 +22,15 @@ export default function Home() {
   ];
 
   return (
-    <main className="flex min-h-screen flex-col items-center gap-8 sm:gap-[10rem] sm:pt-[10%]">
+    <main className="flex min-h-screen flex-col items-center gap-8 sm:gap-[5rem] sm:pt-[10%]">
       <header className="p-10 flex flex-col gap-4 sm:gap-6 items-center">
-        <h1 className="text-3xl sm:text-[4rem] font-bold text-center">Davao Jeepney Guide</h1>
+        <h1 className="text-4xl sm:text-[4rem] font-bold text-center">Davao Jeepney Guide</h1>
         <p className="text-lg sm:text-3xl text-center leading-5">
           Optimize your commute experience in Davao City!
         </p>
-        <Button className="text-lg sm:text-xl px-6 sm:h-[3rem] rounded-2xl w-[50%] mt-8">Get Started</Button>
+        <Button className="text-lg sm:text-xl px-6 sm:h-[3rem] rounded-2xl sm:w-[30%] mt-8">Get Started</Button>
       </header>
-      <section className="w-full sm:w-[75%] flex flex-col gap-6 sm:grid sm:grid-cols-3 justify-center items-center px-6 sm:px-24 mb-10 sm:mb-0">
+      <section className="w-full flex flex-col gap-6 sm:grid sm:grid-cols-3 justify-center items-center px-6 sm:px-[20%] mb-10 sm:mb-0">
         <h1 className="col-span-3 text-[1.75rem] sm:text-[2.75rem] font-semibold text-center">Features</h1>
         {APP_FEATURES.map((feature, index) => (
           <Card key={index} className="col-span-1 flex flex-col justify-center items-center p-6">

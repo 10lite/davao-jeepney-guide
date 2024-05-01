@@ -1,6 +1,7 @@
+## 🚙 Davao Jeepney Guide
 A final project for CMSC 186 (Web Services and Service-Oriented Architecture). Full documentation to be added.
 
-**Tech Stack**
+### ⚙️ **Tech Stack**
 - Next.JS 14
 - TypeScript
 - Tailwind

@@ -40,7 +40,7 @@ export default function Travel() {
   ]
 
   return (
-    <main className="flex min-h-screen flex-col items-center gap-8 sm:gap-[5rem] sm:pt-[10%] p-6">
+    <main className="flex min-h-screen flex-col items-center gap-8 sm:gap-[5rem] sm:pt-[10%] p-6 bg-gray-100">
       <Card>
         <CardHeader>
           <CardTitle>Where are you commuting to?</CardTitle>

@@ -18,6 +18,7 @@ import {
   SelectValue,
   SelectGroup,
 } from "@/components/ui/select"
+import MapContainer from "./components/map-container"
 
 export default function Travel() {
   const JEEPNEY_STOPS: { value: string, label: string }[] = [
@@ -40,8 +41,8 @@ export default function Travel() {
   ]
 
   return (
-    <main className="flex min-h-screen flex-col items-center gap-8 sm:gap-[5rem] sm:pt-[10%] p-6 bg-gray-100">
-      <Card>
+    <main className="flex min-h-screen flex-col items-center gap-8 sm:gap-[5rem] sm:pt-12 p-6 bg-gray-100">
+      <Card className="border-gray-400">
         <CardHeader>
           <CardTitle>Where are you commuting to?</CardTitle>
           <CardDescription>Input your source and destination to locate jeepney routes.</CardDescription>
@@ -93,6 +94,7 @@ export default function Travel() {
           <Button>Search Jeepneys</Button>
         </CardFooter>
       </Card>
+      <MapContainer />
     </main>
   )
 }

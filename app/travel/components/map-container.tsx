@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import CommuteDetails from "./commute-details"
+import { Map } from "@/components/Map"
 
 export default function MapContainer() {
   return (
@@ -22,7 +23,9 @@ export default function MapContainer() {
         </CardDescription>
       </CardHeader>
       <CardContent className="p-0 sm:px-6">
-        <div className="h-[20rem] bg-gray-200 rounded-b-lg"></div>
+        <div className="h-[20rem] bg-gray-200 rounded-b-lg">
+          <Map />
+        </div>
       </CardContent>
     </Card>
   )

@@ -25,7 +25,8 @@ export const Map = () => {
       zoom={13}
       center={center}
       mapContainerStyle={containerStyle}
-      options={{ 
+      options={{
+        mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_STYLE_ID,
         streetViewControl: false,
         fullscreenControl: false,
         zoomControl: false,

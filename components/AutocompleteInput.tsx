@@ -1,25 +1,27 @@
 'use client';
 
-import { Autocomplete, useJsApiLoader } from '@react-google-maps/api';
+import { Autocomplete } from '@react-google-maps/api';
 import { useRef, useState } from 'react';
 
-const AutocompleteInput = () => {
-  const [autocomplete, setAutocomplete] = useState(null);
+interface AutocompleteInputProps { 
+  isLoaded: boolean;
+  loadError: Error | undefined;
+  selected: google.maps.places.PlaceResult | undefined;
+  setSelected: React.Dispatch<React.SetStateAction<google.maps.places.PlaceResult | undefined>>;
+}
+
+const AutocompleteInput = ({ isLoaded, loadError, selected, setSelected }: AutocompleteInputProps) => {
+  const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const inputRef = useRef(null);
 
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API!, // Make sure to use the correct environment variable
-    id: 'google-maps',
-    libraries: ['places']
-  });
-
-  const onLoad = (autocompleteInstance) => {
+  const onLoad = (autocompleteInstance: google.maps.places.Autocomplete) => {
     setAutocomplete(autocompleteInstance);
   };
 
   const onPlaceChanged = () => {
     if (autocomplete !== null) {
       const place = autocomplete.getPlace();
+      setSelected(place);
       console.log(place);
     } else {
       console.log('Autocomplete is not available');

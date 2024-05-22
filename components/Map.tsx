@@ -1,25 +1,21 @@
-'use client'
+'use client';
 
-import { 
-  GoogleMap,
-  useJsApiLoader
-} from '@react-google-maps/api'
+import { DirectionsRenderer, GoogleMap, MarkerF } from '@react-google-maps/api';
 
-export const Map = () => {
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-maps-id',
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API!
-  });
+interface MapProps {
+  source: google.maps.places.PlaceResult | undefined;
+  destination: google.maps.places.PlaceResult | undefined;
+  directionResponse: google.maps.DirectionsResult | undefined;
+}
 
-  if (!isLoaded) return null;
-  
+export const Map = ({ source, destination, directionResponse } : MapProps) => {
   const center = new google.maps.LatLng(7.068489408423691, 125.61118715620856);
 
-  const containerStyle = { 
+  const containerStyle = {
     width: '100%',
     height: '100%'
-  }
-  
+  };
+
   return (
     <GoogleMap
       zoom={13}
@@ -32,9 +28,11 @@ export const Map = () => {
         zoomControl: false,
         mapTypeControl: false,
         scaleControl: false,
-        rotateControl: false,
-      }}
-    >
+        rotateControl: false
+      }}>
+      {directionResponse && <DirectionsRenderer directions={directionResponse} />}
+      {source && <MarkerF position={new google.maps.LatLng(source.geometry.location.lat(), source.geometry.location.lng())} />}
+      {destination && <MarkerF position={new google.maps.LatLng(destination.geometry.location.lat(), destination.geometry.location.lng())} />}
     </GoogleMap>
-  )
-}
+  );
+};

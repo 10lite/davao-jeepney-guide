@@ -1,10 +1,9 @@
-"use server";
-import { Location, WeatherInfo } from "@custom-types/openweather-types";
+import { Location } from "@custom-types/openweather-types";
 
-const fetchWeather = async ({
+const fetchAirQuality = async ({
   longitude,
   latitude,
-}: Location): Promise<WeatherInfo | null> => {
+}: Location): Promise<{ aqi: number } | null> => {
   const apiKey = process.env.OPEN_WEATHER_API_KEY;
 
   if (!apiKey) {
@@ -12,12 +11,11 @@ const fetchWeather = async ({
     return null;
   }
 
-  const url = "https://api.openweathermap.org/data/2.5/weather";
+  const url = "https://api.openweathermap.org/data/2.5/air_pollution";
   const params = {
     lat: latitude,
     lon: longitude,
     appid: apiKey,
-    units: "metric",
   };
 
   const query = new URLSearchParams(params).toString();
@@ -27,7 +25,7 @@ const fetchWeather = async ({
 
     if (!response.ok) {
       console.error(
-        "Failed to fetch weather data",
+        "Failed to fetch air quality data",
         response.status,
         response.statusText
       );
@@ -36,21 +34,14 @@ const fetchWeather = async ({
 
     const data = await response.json();
     const returnParams = {
-      weather: data.weather[0],
-      main: {
-        temp: data.main.temp,
-        feels_like: data.main.feels_like,
-        humidity: data.main.humidity,
-      },
-      dt: data.dt,
-      name: data.name,
+      aqi: data.list[0].main.aqi as number,
     };
 
     return returnParams;
   } catch (error) {
-    console.error("Error fetching weather data", error);
+    console.error("Error fetching air quality data", error);
     return null;
   }
 };
 
-export default fetchWeather;
+export default fetchAirQuality;

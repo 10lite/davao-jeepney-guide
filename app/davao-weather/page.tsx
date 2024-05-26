@@ -7,18 +7,21 @@ import {
   Card,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import fetchWeather, { WeatherInfo } from "@/actions/fetchWeather";
+import fetchWeather from "@/actions/fetchWeather";
 import moment from "moment";
+import { WeatherInfo } from "@custom-types/openweather-types";
+import fetchAirQuality from "@/actions/fetchAirQuality";
 
-const DavaoSummary = async () => {
+const DavaoWeather = async () => {
   const longitude = "125.6205";
   const latitude = "7.0852";
   const weatherData: WeatherInfo | null = await fetchWeather({
     longitude,
     latitude,
   });
+  const aqi = await fetchAirQuality({ longitude, latitude });
 
-  console.log(weatherData);
+  // console.log("AQI", aqi);
 
   return (
     <Card key="1" className="w-full max-w-md">
@@ -61,7 +64,31 @@ const DavaoSummary = async () => {
               </div>
             </div>
           </div>
-          <Badge variant="default">36 AQI</Badge>
+          {aqi?.aqi == 1 && (
+            <Badge variant="default" className="bg-green-600">
+              {aqi?.aqi} AQI (Good)
+            </Badge>
+          )}
+          {aqi?.aqi == 2 && (
+            <Badge variant="default" className="bg-yellow-600">
+              {aqi?.aqi} AQI (Fair)
+            </Badge>
+          )}
+          {aqi?.aqi == 3 && (
+            <Badge variant="default" className="bg-orange-600">
+              {aqi?.aqi} AQI (Moderate)
+            </Badge>
+          )}
+          {aqi?.aqi == 4 && (
+            <Badge variant="default" className="bg-red-600">
+              {aqi?.aqi} AQI (Poor)
+            </Badge>
+          )}
+          {aqi?.aqi == 5 && (
+            <Badge variant="default" className="bg-purple-600">
+              {aqi?.aqi} AQI (Very Poor)
+            </Badge>
+          )}
         </div>
         {weatherData && (
           <div className="flex items-center justify-between">
@@ -142,4 +169,4 @@ const ThermometerIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export default DavaoSummary;
+export default DavaoWeather;

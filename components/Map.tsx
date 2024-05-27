@@ -1,6 +1,7 @@
 'use client';
 
 import { DirectionsRenderer, GoogleMap, MarkerF } from '@react-google-maps/api';
+import { useEffect, useState } from 'react';
 
 interface MapProps {
   source: google.maps.places.PlaceResult | undefined;
@@ -8,17 +9,31 @@ interface MapProps {
   directionResponse: google.maps.DirectionsResult | undefined | null;
 }
 
-export const Map = ({ source, destination, directionResponse } : MapProps) => {
-  const center = new google.maps.LatLng(7.068489408423691, 125.61118715620856);
+export const Map = ({ source, destination, directionResponse }: MapProps) => {
+  const initialCenter = new google.maps.LatLng(7.204899, 125.542159);
+  const [center, setCenter] = useState<google.maps.LatLng>(initialCenter);
 
   const containerStyle = {
     width: '100%',
     height: '100%'
   };
 
+  useEffect(() => {
+    if (directionResponse) {
+      const bounds = new google.maps.LatLngBounds();
+      directionResponse.routes[0].legs.forEach((leg) => {
+        bounds.extend(leg.start_location);
+        bounds.extend(leg.end_location);
+      });
+      setCenter(bounds.getCenter());
+    } else {
+      setCenter(initialCenter);
+    }
+  }, [directionResponse]);
+
   return (
     <GoogleMap
-      zoom={13}
+      zoom={11}
       center={center}
       mapContainerStyle={containerStyle}
       options={{
@@ -31,8 +46,8 @@ export const Map = ({ source, destination, directionResponse } : MapProps) => {
         rotateControl: false
       }}>
       {directionResponse && <DirectionsRenderer directions={directionResponse} />}
-      { !directionResponse && source && <MarkerF position={source.geometry?.location?.toJSON()} />}
-      { !directionResponse && destination && <MarkerF position={destination?.geometry?.location?.toJSON()} />}
+      {!directionResponse && source && <MarkerF position={source.geometry?.location?.toJSON()} />}
+      {!directionResponse && destination && <MarkerF position={destination?.geometry?.location?.toJSON()} />}
     </GoogleMap>
-  );  
+  );
 };

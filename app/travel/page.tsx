@@ -49,7 +49,7 @@ export default function Travel() {
   }
   
   return (
-    <main className="flex min-h-screen flex-col sm:flex-row justify-center items-center gap-4 sm:pt-12 p-6 bg-gray-100">
+    <main className="flex min-h-screen flex-col sm:flex-row justify-center items-center gap-12 sm:pt-12 p-6 bg-gray-100">
       <Card className="border-gray-400">
         <CardHeader className="pb-2 sm:pb-6">
           <CardTitle>Where are you commuting to?</CardTitle>

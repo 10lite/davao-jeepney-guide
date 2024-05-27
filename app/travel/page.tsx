@@ -59,7 +59,7 @@ export default function Travel() {
   };
 
   return (
-    <main className='flex min-h-screen flex-col sm:flex-row justify-center items-center gap-12 sm:pt-12 p-6 bg-gray-100'>
+    <main className={`flex min-h-screen flex-col ${directionResponse && 'flex-col-reverse'} sm:flex-row justify-center items-center gap-12 p-6 bg-gray-100`}>
       {!directionResponse ? (
         <Card className='border-gray-400'>
           <CardHeader className='pb-2 sm:pb-6'>
@@ -94,13 +94,13 @@ export default function Travel() {
           </CardHeader>
           <CardContent className='pb-4 sm:pb-6'>
             {directionResponse.routes.map((route, index) => (
-              <Card key={index} className='border-gray-400 mb-4'>
+              <Card key={index} className={`border-gray-400 hover:border-gray-800 mb-4 hover:shadow-lg ${index===selectedRoute ? 'border-2 border-red-300 hover:border-red-500' : ''}`}>
                 <button onClick={() => setSelectedRoute(index)}>
                   <CardHeader className='p-4 pb-2'>
                     <CardTitle className='text-xl'>Route {index + 1}</CardTitle>
                   </CardHeader>
                   <CardContent className='px-4 pb-4'>
-                    <div className='flex flex-col text-sm'>
+                    <div className='flex flex-col text-sm text-left'>
                       <span>Distance: {route.legs[0]?.distance?.text ?? ''}</span>
                       <span>Duration: {route.legs[0]?.duration?.text ?? ''}</span>
                     </div>

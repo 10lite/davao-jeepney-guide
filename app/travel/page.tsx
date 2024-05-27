@@ -45,6 +45,7 @@ export default function Travel() {
         provideRouteAlternatives: true,
       })
       setDirectionResponse(results)
+      console.log(results)
       
       const distanceResults = await distanceService.getDistanceMatrix({
         origins: [source.name!],

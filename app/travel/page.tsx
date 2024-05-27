@@ -16,6 +16,7 @@ export default function Travel() {
   const [directionResponse, setDirectionResponse] = useState<google.maps.DirectionsResult>();
   const [distanceResponse, setDistanceResponse] = useState<google.maps.DistanceMatrixResponse>();
   const [selectedRoute, setSelectedRoute] = useState<number>();
+  const [fare, setFare] = useState<any[]>([{}]);
 
   const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-maps',
@@ -36,7 +37,8 @@ export default function Travel() {
         origin: source.name!,
         destination: destination.name!,
         travelMode: google.maps.TravelMode.TRANSIT,
-        provideRouteAlternatives: true
+        provideRouteAlternatives: true,
+        optimizeWaypoints: true
       });
       // Sort routes by duration
       results.routes.sort((a, b) => {
@@ -45,8 +47,44 @@ export default function Travel() {
         return durationA - durationB;
       });
       setDirectionResponse(results);
-      console.log(results);
       setSelectedRoute(0);
+
+      results.routes.map((route, index) => {
+        const calcFare = { regular: 0, discounted: 0 };
+        route.legs.map((leg) => {
+          leg.steps.map((step) => {
+            if (step.travel_mode === 'TRANSIT') {
+              const distance = Math.floor(step.distance?.value / 1000);
+              const regularFare = 12;
+              const discountedFare = 9.6;
+              const regularFareAdd = 1.8;
+              const discountedFareAdd = 1.44;
+
+              if (distance <= 4) {
+                calcFare.regular = regularFare;
+                calcFare.discounted = discountedFare;
+              } else {
+                calcFare.regular = regularFare + regularFareAdd * (distance - 4);
+                calcFare.discounted = discountedFare + discountedFareAdd * (distance - 4);
+              }
+            }
+          });
+        });
+
+        // Convert fare values to strings with max 2 decimal points
+        const roundedRegular = calcFare.regular.toFixed(2);
+        const roundedDiscounted = calcFare.discounted.toFixed(2);
+
+        // Update fare state by creating a new array with the updated fare for the current route
+        setFare((prevState) => [
+          ...prevState.slice(0, index), // Keep the previous fare objects before the current index
+          { regular: parseFloat(roundedRegular), discounted: parseFloat(roundedDiscounted) }, // Add the new fare object for the current route
+          ...prevState.slice(index + 1) // Keep the previous fare objects after the current index
+        ]);
+
+        // Returning the fare just for logging purposes, you might not need this
+        return calcFare;
+      });
 
       const distanceResults = await distanceService.getDistanceMatrix({
         origins: [source.name!],
@@ -103,6 +141,8 @@ export default function Travel() {
                     <div className='flex flex-col text-sm text-left'>
                       <span>Distance: {route.legs[0]?.distance?.text ?? ''}</span>
                       <span>Duration: {route.legs[0]?.duration?.text ?? ''}</span>
+                      <span>Regulare Fare: {fare[index]?.regular}</span>
+                      <span>Discounted Fare: {fare[index]?.discounted}</span>
                     </div>
                   </CardContent>
                 </button>

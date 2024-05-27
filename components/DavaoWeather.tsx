@@ -14,6 +14,7 @@ import moment from "moment";
 import fetchWeather from "@/utils/fetchWeather";
 import fetchAirQuality from "@/utils/fetchAirQuality";
 import { WeatherInfo } from "@custom-types/openweather-types";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const DavaoWeather = ({ className = "" }: { className?: string }) => {
   const [weatherData, setWeatherData] = useState<WeatherInfo | null>(null);
@@ -36,7 +37,18 @@ const DavaoWeather = ({ className = "" }: { className?: string }) => {
     fetchData();
   }, [longitude, latitude]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center">
+        <div className="flex flex-col space-y-3">
+          <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[200px]" />
+          </div>
+        </div>
+      </div>
+    );
 
   return (
     <Card key="1" className={`w-full max-w-md border-gray-400 ${className}`}>

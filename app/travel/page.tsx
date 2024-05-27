@@ -49,15 +49,15 @@ export default function Travel() {
   }
   
   return (
-    <main className="flex min-h-screen flex-col items-center gap-8 sm:gap-[5rem] sm:pt-12 p-6 bg-gray-100">
+    <main className="flex min-h-screen flex-col sm:flex-row justify-center items-center gap-4 sm:pt-12 p-6 bg-gray-100">
       <Card className="border-gray-400">
-        <CardHeader>
+        <CardHeader className="pb-2 sm:pb-6">
           <CardTitle>Where are you commuting to?</CardTitle>
           <CardDescription>Input your source and destination to locate jeepney routes.</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pb-4 sm:pb-6">
           <form>
-            <div className="grid w-full items-center gap-4">
+            <div className="grid w-full items-center gap-2 sm:gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="from">From</Label>
                 <AutocompleteInput 

@@ -2,6 +2,7 @@
 
 import { Autocomplete } from '@react-google-maps/api';
 import { useRef, useState } from 'react';
+import { Input } from './ui/input';
 
 interface AutocompleteInputProps { 
   isLoaded: boolean;
@@ -49,7 +50,7 @@ const AutocompleteInput = ({ isLoaded, loadError, selected, setSelected }: Autoc
           ),
           strictBounds: true
         }}>
-        <input type='text' placeholder='Enter a location' ref={inputRef} style={{ width: '300px', height: '40px', padding: '10px' }} />
+        <Input type='text' placeholder='Enter a location' ref={inputRef} style={{ width: '100%', height: '40px', padding: '10px' }} />
       </Autocomplete>
     </div>
   );

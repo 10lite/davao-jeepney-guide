@@ -22,6 +22,7 @@ export default function Travel() {
   const [ destination, setDestination ] = useState<google.maps.places.PlaceResult>();
   const [directionResponse, setDirectionResponse] = useState<google.maps.DirectionsResult>();
   const [distanceResponse, setDistanceResponse] = useState<google.maps.DistanceMatrixResponse>();
+  const [ selectedRoute, setSelectedRoute ] = useState<number>(0);
 
   const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-maps',
@@ -45,6 +46,7 @@ export default function Travel() {
         provideRouteAlternatives: true,
       })
       setDirectionResponse(results)
+      setSelectedRoute(0)
       console.log(results)
       
       const distanceResults = await distanceService.getDistanceMatrix({
@@ -105,17 +107,19 @@ export default function Travel() {
           </CardHeader>
           <CardContent className="pb-4 sm:pb-6">
             {directionResponse.routes.map((route, index) => (
-              <Card key={index} className="border-gray-400 mb-4">
-                <CardHeader className="p-4 pb-2">
-                  <CardTitle className="text-xl">Route {index + 1}</CardTitle>
-                </CardHeader>
-                <CardContent className="px-4 pb-4">
-                  <div className="flex flex-col text-sm">
-                    <span>Distance: {route.legs[0]?.distance?.text ?? ''}</span>
-                    <span>Duration: {route.legs[0]?.duration?.text ?? ''}</span>
-                  </div>
-                </CardContent>
-              </Card>
+                <Card key={index} className="border-gray-400 mb-4">
+                  <button onClick={() => setSelectedRoute(index)}>
+                    <CardHeader className="p-4 pb-2">
+                      <CardTitle className="text-xl">Route {index + 1}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="px-4 pb-4">
+                      <div className="flex flex-col text-sm">
+                        <span>Distance: {route.legs[0]?.distance?.text ?? ''}</span>
+                        <span>Duration: {route.legs[0]?.duration?.text ?? ''}</span>
+                      </div>
+                    </CardContent>
+                  </button>
+                </Card>
             ))
             }
           </CardContent>
@@ -126,6 +130,7 @@ export default function Travel() {
         destination={destination}
         directionResponse={directionResponse}
         distanceResponse={distanceResponse}
+        selectedRoute={selectedRoute}
       />
     </main>
   )

@@ -10,7 +10,7 @@ interface MapContainerProps {
   distanceResponse: google.maps.DistanceMatrixResponse | undefined;
 }
 
-export default function MapContainer({ source, destination, directionResponse, distanceResponse }: MapContainerProps) {
+export default function MapContainer({ source, destination, directionResponse, distanceResponse}: MapContainerProps, selectedRoute : number ) {
   return (
     <Card className='w-full sm:w-[60%] sm:p-6 border-gray-400'>
       <CardHeader className='sm:pt-0'>
@@ -39,6 +39,7 @@ export default function MapContainer({ source, destination, directionResponse, d
             source={source}
             destination={destination}
             directionResponse={directionResponse}
+            selectedRoute={selectedRoute}
           />
         </div>
       </CardContent>

@@ -9,7 +9,7 @@ interface MapProps {
   directionResponse: google.maps.DirectionsResult | undefined | null;
 }
 
-export const Map = ({ source, destination, directionResponse }: MapProps) => {
+export const Map = ({ source, destination, directionResponse }: MapProps, selectedRoute : number) => {
   const initialCenter = new google.maps.LatLng(7.204899, 125.542159);
   const [center, setCenter] = useState<google.maps.LatLng>(initialCenter);
 
@@ -29,7 +29,7 @@ export const Map = ({ source, destination, directionResponse }: MapProps) => {
     } else {
       setCenter(initialCenter);
     }
-  }, [directionResponse]);
+  }, [directionResponse, selectedRoute]);
 
   return (
     <GoogleMap

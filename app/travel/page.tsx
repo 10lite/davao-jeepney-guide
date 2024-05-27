@@ -53,48 +53,73 @@ export default function Travel() {
         unitSystem: google.maps.UnitSystem.METRIC,
       })
       setDistanceResponse(distanceResults);
-    }
 
+      console.log(results)
+    }
   }
   
   return (
     <main className="flex min-h-screen flex-col sm:flex-row justify-center items-center gap-12 sm:pt-12 p-6 bg-gray-100">
-      <Card className="border-gray-400">
-        <CardHeader className="pb-2 sm:pb-6">
-          <CardTitle>Where are you commuting to?</CardTitle>
-          <CardDescription>Input your source and destination to locate jeepney routes.</CardDescription>
-        </CardHeader>
-        <CardContent className="pb-4 sm:pb-6">
-          <form>
-            <div className="grid w-full items-center gap-2 sm:gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="from">From</Label>
-                <AutocompleteInput 
-                  isLoaded={isLoaded}
-                  loadError={loadError}
-                  selected={source}
-                  setSelected={setSource}
-                />
+      {!directionResponse ?
+        <Card className="border-gray-400">
+          <CardHeader className="pb-2 sm:pb-6">
+            <CardTitle>Where are you commuting to?</CardTitle>
+            <CardDescription>Input your source and destination to locate jeepney routes.</CardDescription>
+          </CardHeader>
+          <CardContent className="pb-4 sm:pb-6">
+            <form>
+              <div className="grid w-full items-center gap-2 sm:gap-4">
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="from">From</Label>
+                  <AutocompleteInput 
+                    isLoaded={isLoaded}
+                    loadError={loadError}
+                    selected={source}
+                    setSelected={setSource}
+                  />
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="to">To</Label>
+                  <AutocompleteInput 
+                    isLoaded={isLoaded}
+                    loadError={loadError}
+                    selected={destination}
+                    setSelected={setDestination}
+                  />
+                </div>
               </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="to">To</Label>
-                <AutocompleteInput 
-                  isLoaded={isLoaded}
-                  loadError={loadError}
-                  selected={destination}
-                  setSelected={setDestination}
-                />
-              </div>
-            </div>
-          </form>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" asChild>
-            <Link href="/">Cancel</Link>
-          </Button>
-          <Button onClick={() => calculateRoute()}>Search Jeepneys</Button>
-        </CardFooter>
-      </Card>
+            </form>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button variant="outline" asChild>
+              <Link href="/">Cancel</Link>
+            </Button>
+            <Button onClick={() => calculateRoute()}>Search Jeepneys</Button>
+          </CardFooter>
+        </Card>
+        :
+        <Card className="border-gray-400">
+          <CardHeader className="pb-2 sm:pb-6">
+            <CardTitle>Available Routes</CardTitle>
+          </CardHeader>
+          <CardContent className="pb-4 sm:pb-6">
+            {directionResponse.routes.map((route, index) => (
+              <Card key={index} className="border-gray-400 mb-4">
+                <CardHeader className="p-4 pb-2">
+                  <CardTitle className="text-xl">Route {index + 1}</CardTitle>
+                </CardHeader>
+                <CardContent className="px-4 pb-4">
+                  <div className="flex flex-col text-sm">
+                    <span>Distance: {route.legs[0]?.distance?.text ?? ''}</span>
+                    <span>Duration: {route.legs[0]?.duration?.text ?? ''}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+            }
+          </CardContent>
+        </Card>
+      }
       <MapContainer
         source={source}
         destination={destination}

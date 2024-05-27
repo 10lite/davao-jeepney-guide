@@ -140,7 +140,7 @@ export default function Travel() {
     <main
       className={`flex min-h-screen flex-col ${
         directionResponse && "flex-col-reverse"
-      } sm:flex-row justify-center items-center gap-12 p-6 bg-gray-100`}
+      } sm:flex-row justify-center items-center gap-12 p-6 bg-gray-100 relative`}
     >
       {!directionResponse ? (
         <div className="flex flex-col space-y-5">

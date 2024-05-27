@@ -1,4 +1,7 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
+import { useState, useEffect } from "react";
 import {
   CardTitle,
   CardDescription,
@@ -7,21 +10,33 @@ import {
   Card,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import fetchWeather from "@/actions/fetchWeather";
 import moment from "moment";
+import fetchWeather from "@/utils/fetchWeather";
+import fetchAirQuality from "@/utils/fetchAirQuality";
 import { WeatherInfo } from "@custom-types/openweather-types";
-import fetchAirQuality from "@/actions/fetchAirQuality";
 
-const DavaoWeather = async () => {
+const DavaoWeather = () => {
+  const [weatherData, setWeatherData] = useState<WeatherInfo | null>(null);
+  const [aqi, setAqi] = useState<{ aqi: number } | null>(null);
+  const [loading, setLoading] = useState(true);
+
   const longitude = "125.6205";
   const latitude = "7.0852";
-  const weatherData: WeatherInfo | null = await fetchWeather({
-    longitude,
-    latitude,
-  });
-  const aqi = await fetchAirQuality({ longitude, latitude });
 
-  // console.log("AQI", aqi);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const weather = await fetchWeather({ longitude, latitude });
+      const airQuality = await fetchAirQuality({ longitude, latitude });
+      setWeatherData(weather);
+      setAqi(airQuality);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [longitude, latitude]);
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <Card key="1" className="w-full max-w-md">

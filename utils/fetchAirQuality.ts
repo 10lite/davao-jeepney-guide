@@ -1,10 +1,11 @@
-import { Location } from "@custom-types/openweather-types";
-
 const fetchAirQuality = async ({
   longitude,
   latitude,
-}: Location): Promise<{ aqi: number } | null> => {
-  const apiKey = process.env.OPEN_WEATHER_API_KEY;
+}: {
+  longitude: string;
+  latitude: string;
+}): Promise<{ aqi: number } | null> => {
+  const apiKey = process.env.NEXT_PUBLIC_OPEN_WEATHER_API_KEY;
 
   if (!apiKey) {
     console.error("API key is missing");

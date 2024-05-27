@@ -1,11 +1,13 @@
-"use server";
-import { Location, WeatherInfo } from "@custom-types/openweather-types";
+import { WeatherInfo } from "@custom-types/openweather-types";
 
 const fetchWeather = async ({
   longitude,
   latitude,
-}: Location): Promise<WeatherInfo | null> => {
-  const apiKey = process.env.OPEN_WEATHER_API_KEY;
+}: {
+  longitude: string;
+  latitude: string;
+}): Promise<WeatherInfo | null> => {
+  const apiKey = process.env.NEXT_PUBLIC_OPEN_WEATHER_API_KEY;
 
   if (!apiKey) {
     console.error("API key is missing");

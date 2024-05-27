@@ -4,13 +4,13 @@ import CommuteDetails from './commute-details';
 import { Map } from '@/components/Map';
 
 interface MapContainerProps {
-  isLoaded: boolean;
   source: google.maps.places.PlaceResult | undefined;
   destination: google.maps.places.PlaceResult | undefined;
   directionResponse: google.maps.DirectionsResult | undefined;
+  distanceResponse: google.maps.DistanceMatrixResponse | undefined;
 }
 
-export default function MapContainer({ isLoaded, source, destination, directionResponse }: MapContainerProps) {
+export default function MapContainer({ source, destination, directionResponse, distanceResponse }: MapContainerProps) {
   return (
     <Card className='w-full sm:w-[60%] sm:p-6 border-gray-400'>
       <CardHeader className='sm:pt-0'>
@@ -21,7 +21,10 @@ export default function MapContainer({ isLoaded, source, destination, directionR
             <>
               Traveling from <span className='underline leading-4'>{!source ? 'Source' : source?.name}</span> to{' '}
               <span className='underline leading-4'>{!destination ? '...' : destination?.name}</span>
-              <CommuteDetails />
+              <CommuteDetails 
+                distance={distanceResponse?.rows[0].elements[0].distance.text}
+                duration={distanceResponse?.rows[0].elements[0].duration.text}
+              />
             </>
           }
         </CardTitle>

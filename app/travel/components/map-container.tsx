@@ -8,9 +8,10 @@ interface MapContainerProps {
   destination: google.maps.places.PlaceResult | undefined;
   directionResponse: google.maps.DirectionsResult | undefined;
   distanceResponse: google.maps.DistanceMatrixResponse | undefined;
+  selectedRoute: number | undefined;
 }
 
-export default function MapContainer({ source, destination, directionResponse, distanceResponse}: MapContainerProps, selectedRoute : number ) {
+export default function MapContainer({ source, destination, directionResponse, distanceResponse, selectedRoute}: MapContainerProps ) {
   return (
     <Card className='w-full sm:w-[60%] sm:p-6 border-gray-400'>
       <CardHeader className='sm:pt-0'>

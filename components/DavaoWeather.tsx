@@ -15,7 +15,7 @@ import fetchWeather from "@/utils/fetchWeather";
 import fetchAirQuality from "@/utils/fetchAirQuality";
 import { WeatherInfo } from "@custom-types/openweather-types";
 
-const DavaoWeather = () => {
+const DavaoWeather = ({ className = "" }: { className?: string }) => {
   const [weatherData, setWeatherData] = useState<WeatherInfo | null>(null);
   const [aqi, setAqi] = useState<{ aqi: number } | null>(null);
   const [loading, setLoading] = useState(true);
@@ -39,11 +39,11 @@ const DavaoWeather = () => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <Card key="1" className="w-full max-w-md">
+    <Card key="1" className={`w-full max-w-md border-gray-400 ${className}`}>
       <CardHeader className="flex items-center justify-between">
         <div className="space-y-1">
-          <CardTitle>{weatherData?.name}</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-center">{weatherData?.name}</CardTitle>
+          <CardDescription className="text-center">
             Last updated:{" "}
             {weatherData
               ? moment.unix(weatherData.dt).startOf("minute").fromNow()
@@ -74,9 +74,6 @@ const DavaoWeather = () => {
             <LeafIcon className="w-6 h-6 text-green-500" />
             <div>
               <div className="font-medium">Air Quality</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                Good
-              </div>
             </div>
           </div>
           {aqi?.aqi == 1 && (

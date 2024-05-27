@@ -18,9 +18,10 @@ import { useJsApiLoader } from "@react-google-maps/api"
 import AutocompleteInput from "@/components/AutocompleteInput"
 
 export default function Travel() {
-  const [ source, setSource ] = useState<google.maps.places.PlaceResult | undefined>();
-  const [ destination, setDestination ] = useState<google.maps.places.PlaceResult | undefined>();
-  const [directionResponse, setDirectionResponse] = useState<google.maps.DirectionsResult | null>();
+  const [ source, setSource ] = useState<google.maps.places.PlaceResult>();
+  const [ destination, setDestination ] = useState<google.maps.places.PlaceResult>();
+  const [directionResponse, setDirectionResponse] = useState<google.maps.DirectionsResult>();
+  const [distanceResponse, setDistanceResponse] = useState<google.maps.DistanceMatrixResponse>();
 
   const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-maps',
@@ -34,16 +35,24 @@ export default function Travel() {
 
   const calculateRoute = async () => {
     const directionsService = new google.maps.DirectionsService();
+    const distanceService = new google.maps.DistanceMatrixService();
 
     if( source && destination ) {
       const results = await directionsService.route({ 
-        origin: source.name,
-        destination: destination.name,
+        origin: source.name!,
+        destination: destination.name!,
         travelMode: google.maps.TravelMode.TRANSIT,
         provideRouteAlternatives: true,
       })
       setDirectionResponse(results)
-      console.log(results)
+      
+      const distanceResults = await distanceService.getDistanceMatrix({
+        origins: [source.name!],
+        destinations: [destination.name!],
+        travelMode: google.maps.TravelMode.TRANSIT,
+        unitSystem: google.maps.UnitSystem.METRIC,
+      })
+      setDistanceResponse(distanceResults);
     }
 
   }
@@ -86,11 +95,11 @@ export default function Travel() {
           <Button onClick={() => calculateRoute()}>Search Jeepneys</Button>
         </CardFooter>
       </Card>
-      <MapContainer 
-        isLoaded={isLoaded}
+      <MapContainer
         source={source}
         destination={destination}
         directionResponse={directionResponse}
+        distanceResponse={distanceResponse}
       />
     </main>
   )

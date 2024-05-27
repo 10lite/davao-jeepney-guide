@@ -5,7 +5,7 @@ import { DirectionsRenderer, GoogleMap, MarkerF } from '@react-google-maps/api';
 interface MapProps {
   source: google.maps.places.PlaceResult | undefined;
   destination: google.maps.places.PlaceResult | undefined;
-  directionResponse: google.maps.DirectionsResult | undefined;
+  directionResponse: google.maps.DirectionsResult | undefined | null;
 }
 
 export const Map = ({ source, destination, directionResponse } : MapProps) => {
@@ -31,8 +31,8 @@ export const Map = ({ source, destination, directionResponse } : MapProps) => {
         rotateControl: false
       }}>
       {directionResponse && <DirectionsRenderer directions={directionResponse} />}
-      {source && <MarkerF position={new google.maps.LatLng(source.geometry.location.lat(), source.geometry.location.lng())} />}
-      {destination && <MarkerF position={new google.maps.LatLng(destination.geometry.location.lat(), destination.geometry.location.lng())} />}
+      { !directionResponse && source && <MarkerF position={source.geometry?.location?.toJSON()} />}
+      { !directionResponse && destination && <MarkerF position={destination?.geometry?.location?.toJSON()} />}
     </GoogleMap>
-  );
+  );  
 };

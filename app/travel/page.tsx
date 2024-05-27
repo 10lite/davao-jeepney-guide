@@ -48,7 +48,14 @@ export default function Travel() {
         travelMode: google.maps.TravelMode.TRANSIT,
         provideRouteAlternatives: true,
       });
+      // Sort routes by duration
+      results.routes.sort((a, b) => {
+        const durationA = a.legs.reduce((total, leg) => total + leg.duration.value, 0);
+        const durationB = b.legs.reduce((total, leg) => total + leg.duration.value, 0);
+        return durationA - durationB;
+      });
       setDirectionResponse(results);
+      console.log(results);
       setSelectedRoute(0);
 
       const distanceResults = await distanceService.getDistanceMatrix({

@@ -16,7 +16,6 @@ import MapContainer from "./components/map-container";
 import { useState } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 import AutocompleteInput from "@/components/AutocompleteInput";
-import DavaoWeather from "@/components/DavaoWeather";
 
 export default function Travel() {
   const [source, setSource] = useState<google.maps.places.PlaceResult>();
@@ -26,6 +25,7 @@ export default function Travel() {
     useState<google.maps.DirectionsResult>();
   const [distanceResponse, setDistanceResponse] =
     useState<google.maps.DistanceMatrixResponse>();
+  const [selectedRoute, setSelectedRoute] = useState<number>();
 
   const { isLoaded, loadError } = useJsApiLoader({
     id: "google-maps",
@@ -49,7 +49,7 @@ export default function Travel() {
         provideRouteAlternatives: true,
       });
       setDirectionResponse(results);
-      console.log(results);
+      setSelectedRoute(0);
 
       const distanceResults = await distanceService.getDistanceMatrix({
         origins: [source.name!],
@@ -63,7 +63,7 @@ export default function Travel() {
 
   return (
     <main className="flex min-h-screen flex-col sm:flex-row justify-center items-center gap-12 sm:pt-12 p-6 bg-gray-100">
-      <div>
+      {!directionResponse ? (
         <Card className="border-gray-400">
           <CardHeader className="pb-2 sm:pb-6">
             <CardTitle>Where are you commuting to?</CardTitle>
@@ -102,13 +102,40 @@ export default function Travel() {
             <Button onClick={() => calculateRoute()}>Search Jeepneys</Button>
           </CardFooter>
         </Card>
-        <DavaoWeather />
-      </div>
+      ) : (
+        <Card className="border-gray-400">
+          <CardHeader className="pb-2 sm:pb-6">
+            <CardTitle>Available Routes</CardTitle>
+          </CardHeader>
+          <CardContent className="pb-4 sm:pb-6">
+            {directionResponse.routes.map((route, index) => (
+              <Card key={index} className="border-gray-400 mb-4">
+                <button onClick={() => setSelectedRoute(index)}>
+                  <CardHeader className="p-4 pb-2">
+                    <CardTitle className="text-xl">Route {index + 1}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="px-4 pb-4">
+                    <div className="flex flex-col text-sm">
+                      <span>
+                        Distance: {route.legs[0]?.distance?.text ?? ""}
+                      </span>
+                      <span>
+                        Duration: {route.legs[0]?.duration?.text ?? ""}
+                      </span>
+                    </div>
+                  </CardContent>
+                </button>
+              </Card>
+            ))}
+          </CardContent>
+        </Card>
+      )}
       <MapContainer
         source={source}
         destination={destination}
         directionResponse={directionResponse}
         distanceResponse={distanceResponse}
+        selectedRoute={selectedRoute}
       />
     </main>
   );

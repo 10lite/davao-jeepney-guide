@@ -8,16 +8,16 @@ interface MapContainerProps {
   destination: google.maps.places.PlaceResult | undefined;
   directionResponse: google.maps.DirectionsResult | undefined;
   distanceResponse: google.maps.DistanceMatrixResponse | undefined;
-  selectedRoute: number | undefined;
+  selectedRoute: number | 0;
 }
 
 export default function MapContainer({ source, destination, directionResponse, distanceResponse, selectedRoute}: MapContainerProps ) {
   return (
-    <Card className='w-full sm:w-[60%] sm:p-6 border-gray-400'>
-      <CardHeader className='sm:pt-0'>
+    <Card className='w-full sm:w-[60%] sm:p-0 border-gray-400'>
+      <CardHeader>
         <CardTitle className="flex flex-col gap-1 sm:gap-2 items-center sm:items-start text-xl sm:text-2xl leading-6">
           {source === undefined && destination === undefined
-            ? 'Input your route to locate jeepney routes.' 
+            ? 'Input your route to locate jeepney routes' 
             : 
             <>
               <header className="flex flex-col sm:flex-row font-normal gap-1 sm:gap-2">
@@ -26,15 +26,19 @@ export default function MapContainer({ source, destination, directionResponse, d
                 to
                 <span className='font-semibold underline  text-center'>{!destination ? '...' : destination?.name}</span>
               </header>
-              <CommuteDetails 
-                distance={distanceResponse?.rows[0].elements[0].distance.text}
-                duration={distanceResponse?.rows[0].elements[0].duration.text}
-              />
+              {directionResponse &&
+                <CommuteDetails 
+                  distance={directionResponse?.routes[selectedRoute]?.legs[0]?.distance?.text}
+                  duration={directionResponse?.routes[selectedRoute]?.legs[0]?.duration?.text}
+                  /* Stops = Number of Transit steps */
+                  stops={directionResponse?.routes[selectedRoute]?.legs[0]?.steps.filter(step => step.travel_mode === 'TRANSIT').length || 0}
+                />
+              }
             </>
           }
         </CardTitle>
       </CardHeader>
-      <CardContent className='p-0 sm:px-6'>
+      <CardContent className='p-0'>
         <div className='h-[20rem] sm:h-[80vh] bg-gray-200 rounded-b-lg'>
           <Map 
             source={source}

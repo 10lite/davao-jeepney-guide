@@ -7,16 +7,16 @@ interface MapContainerProps {
   source: google.maps.places.PlaceResult | undefined;
   destination: google.maps.places.PlaceResult | undefined;
   directionResponse: google.maps.DirectionsResult | undefined;
-  distanceResponse: google.maps.DistanceMatrixResponse | undefined;
   selectedRoute: number | 0;
+  fare: any[];
 }
 
 export default function MapContainer({
   source,
   destination,
   directionResponse,
-  distanceResponse,
   selectedRoute,
+  fare
 }: MapContainerProps) {
   return (
     <Card className="w-full sm:w-[60%] sm:p-0 border-gray-400">
@@ -46,6 +46,7 @@ export default function MapContainer({
                     directionResponse?.routes[selectedRoute]?.legs[0]?.duration
                       ?.text
                   }
+                  fare={fare[selectedRoute]}
                   /* Stops = Number of Transit steps */
                   stops={
                     directionResponse?.routes[

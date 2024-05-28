@@ -50,8 +50,8 @@ export const Map = ({ source, destination, directionResponse, selectedRoute }: M
         <DirectionsRenderer directions={directionResponse} routeIndex={selectedRoute} />
       ) : (
         <>
-          {source && <MarkerF position={source.geometry?.location?.toJSON()} />}
-          {destination && <MarkerF position={destination.geometry?.location?.toJSON()} />}
+          {source && <MarkerF position={source.geometry?.location?.toJSON()!} />}
+          {destination && <MarkerF position={destination.geometry?.location?.toJSON()!} />}
         </>
       )}
     </GoogleMap>

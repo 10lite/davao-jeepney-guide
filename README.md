@@ -27,8 +27,8 @@ Davao Commute Guide is a final project for an academic course CMSC 186 (Web Serv
 | Instruction|Image|
 |---|---|
 | Go to [OpenWeather API](https://openweathermap.org/) and create an account|![image](https://github.com/10lite/davao-jeepney-guide/assets/85869308/88df0eed-fdad-4271-a3d5-024eae4d7036)|
-| Proceed `API Keys` tab |   |
-| Copy the `default` API Key |   |
+| Proceed `API Keys` tab | ![image](https://github.com/10lite/davao-jeepney-guide/assets/91829714/a0b30c7a-9d6f-4be9-ab4b-14cdbb825fd6) |
+| Copy the `default` API Key | ![image](https://github.com/10lite/davao-jeepney-guide/assets/91829714/d3ef3b09-fe6a-4695-a648-023ccbbc9216) |
 
 ### Creating environment
 1. Create `.env.local` in the root directory of the repository.

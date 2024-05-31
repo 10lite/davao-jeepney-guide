@@ -24,6 +24,8 @@ Davao Commute Guide is a final project for an academic course CMSC 186 (Web Serv
 | Copy the API key in the right side of the page. |
 
 ### Generating OpenWeather API
+| Instruction|Image|
+|---|---|
 | Go to [OpenWeather API](https://openweathermap.org/) and create an account|![image](https://github.com/10lite/davao-jeepney-guide/assets/85869308/88df0eed-fdad-4271-a3d5-024eae4d7036)|
 | Proceed `API Keys` tab |   |
 | Copy the `default` API Key |   |

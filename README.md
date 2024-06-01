@@ -1,4 +1,4 @@
-## 🚙 Davao Commute Guide
+## 🚙 Davao Commute Guide ([Link to GitHub Repository](https://github.com/10lite/davao-jeepney-guide))
 Davao Commute Guide is a final project for an academic course CMSC 186 (Web Services and Service-Oriented Architecture). Full documentation will be iteratively added.
 
 ### ⚙️ **Tech Stack**
